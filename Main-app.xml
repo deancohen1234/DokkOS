@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <!-- 
 	Usage:
 
@@ -23,52 +23,6 @@
   <filename>Main</filename>
   <description/>
   <name>Main</name>
-  <android>
-        <manifestAdditions><![CDATA[<manifest android:installLocation="auto">
-            <uses-permission android:name="android.permission.INTERNET" />
-            <!--You surely need permission to use the camera, right?-->
-            <uses-permission android:name="android.permission.CAMERA" />
-            <uses-feature android:name="android.hardware.camera" />
-            <uses-feature android:name="android.hardware.camera.autofocus" android:required="false" />
-            <uses-feature android:name="android.hardware.screen.landscape" />
-            <!--If you wish to use the vibration when a barcode is detected, you need to set the permission like below-->
-            <uses-permission android:name="android.permission.VIBRATE"/>
-            <!--Android 15 or higher can support this ANE-->
-            <uses-sdk android:minSdkVersion="15" />
-            <!--The new Permission thing on Android works ONLY if you are targetting Android SDK 23 or higher-->
-            <uses-sdk android:targetSdkVersion="23"/>
-            <!--Zxing lib requires you to set this screen supports-->
-            <supports-screens 	android:anyDensity="true"
-                android:largeScreens="true"
-                android:normalScreens="true"
-                android:smallScreens="true"
-                android:xlargeScreens="true" />
-            <application>
-            <activity>
-                <intent-filter>
-                    <action android:name="android.intent.action.MAIN" />
-                    <category android:name="android.intent.category.LAUNCHER" />
-                </intent-filter>
-                <intent-filter>
-                    <action android:name="android.intent.action.VIEW" />
-                    <category android:name="android.intent.category.BROWSABLE" />
-                    <category android:name="android.intent.category.DEFAULT" />
-                </intent-filter>
-            </activity>
-            <!--Main activity for detecting barcodes-->
-            <activity 	android:name="com.google.zxing.client.android.CaptureActivity"
-                android:clearTaskOnLaunch="true"
-                android:screenOrientation="landscape"
-                android:configChanges="orientation|keyboardHidden"
-                android:stateNotNeeded="true"
-                android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
-                android:windowSoftInputMode="stateAlwaysHidden" />
-            <!--bridge activity between Native Android and Adobe Air-->
-            <activity 	android:name="com.doitflash.barcode.utils.ExBridge"
-            android:theme="@style/Theme.Transparent" />
-            </application>
-            </manifest>]]></manifestAdditions>
-    </android>
   <copyright/>
   <initialWindow>
     <content>Main.swf</content>
@@ -78,8 +32,40 @@
     <fullScreen>false</fullScreen>
     <aspectRatio>portrait</aspectRatio>
     <renderMode>cpu</renderMode>
-  </initialWindow>
+    <autoOrients>false</autoOrients></initialWindow>
   <icon/>
   <customUpdateUI>false</customUpdateUI>
   <allowBrowserInvocation>false</allowBrowserInvocation>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <android>
+    <manifestAdditions><![CDATA[<manifest>
+<uses-permission android:name="android.permission.INTERNET"/>
+<uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+<uses-permission android:name="android.permission.VIBRATE"/>
+</manifest>]]></manifestAdditions>
+  </android>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <extensions>
+    <extensionID>com.adobe.Vibration</extensionID>
+  </extensions>
 </application>

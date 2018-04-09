@@ -6,11 +6,16 @@
 	import flash.events.TouchEvent;
 	import flash.ui.Multitouch;
 	import flash.ui.MultitouchInputMode;
+	import flash.external.ExternalInterface;
+	
+	import com.adobe.nativeExtensions.Vibration;
 	
 	public class Main extends Sprite {
 
 		private var startScreenSprite:Sprite;
 		private var mainScreenSprite:Sprite;
+		
+		private var vibration:Vibration;
 		
 		public function Main() 
 		{
@@ -50,7 +55,7 @@
 
 			mainScreenSprite.addChild(libraryImage);
 			
-			//mainScreenSprite.addEventListener(TouchEvent.TOUCH_BEGIN, OnTouchTap);
+			mainScreenSprite.addEventListener(TouchEvent.TOUCH_BEGIN, OnOpenPersonalBarcode);
 		}
 		
 		private function OnTouchTap(evt:TouchEvent):void 
@@ -60,6 +65,18 @@
 			startScreenSprite.removeChildAt(0);
 			
 			DisplayMainScreen();
+		}
+		
+		private function OnOpenPersonalBarcode(evt:TouchEvent):void 
+		{
+			trace(Vibration.isSupported);
+			
+			//vibrate
+			if (Vibration.isSupported) 
+			{
+				vibration = new Vibration();
+				vibration.vibrate(2000);
+			}
 		}
 
 	}
