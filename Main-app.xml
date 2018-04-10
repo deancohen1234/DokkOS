@@ -19,7 +19,7 @@
 <application xmlns="http://ns.adobe.com/air/application/26.0">
   <id>Main</id>
   <versionNumber>1.0.0</versionNumber>
-  <versionLabel/>
+  <versionLabel></versionLabel>
   <filename>Main</filename>
   <description/>
   <name>Main</name>
@@ -52,6 +52,9 @@
 <uses-permission android:name="android.permission.VIBRATE"/>
 </manifest>]]></manifestAdditions>
   </android>
+  
+  
+  
   
   
   
