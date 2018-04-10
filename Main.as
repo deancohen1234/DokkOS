@@ -7,6 +7,15 @@
 	import flash.ui.Multitouch;
 	import flash.ui.MultitouchInputMode;
 	import flash.external.ExternalInterface;
+	import flash.html.HTMLLoader; 
+	
+	import flash.display.BitmapData;
+	import flash.net.URLRequest;
+	import flash.net.URLLoader;
+	import flash.geom.Rectangle;
+	import flash.filesystem.File;
+	
+	import flash.media.StageWebView;
 	
 	import com.adobe.nativeExtensions.Vibration;
 	
@@ -14,12 +23,18 @@
 
 		private var startScreenSprite:Sprite;
 		private var mainScreenSprite:Sprite;
+		private var qrSprite:Sprite;
 		
 		private var vibration:Vibration;
 		
+		private var htmlStageView:StageWebView = new StageWebView()
+		
 		public function Main() 
 		{
+			qrSprite = new Sprite();
 			Multitouch.inputMode=MultitouchInputMode.TOUCH_POINT; 
+			htmlStageView.viewPort = new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
+			//htmlStageView.stage = this.stage;
 			trace("Working");
 			DisplayStartScreen();
 		}
@@ -68,16 +83,34 @@
 		}
 		
 		private function OnOpenPersonalBarcode(evt:TouchEvent):void 
-		{
-			trace(Vibration.isSupported);
-			
+		{	
+			mainScreenSprite.removeChildAt(0);
 			//vibrate
 			if (Vibration.isSupported) 
 			{
 				vibration = new Vibration();
 				vibration.vibrate(2000);
 			}
-		}
+			
+			var webView:StageWebView = new StageWebView();
+			webView.stage = this.stage;
+			webView.viewPort = new Rectangle( 0, 0, stage.stageWidth, stage.stageHeight );
+
+		/*var htmlString:String = "<!DOCTYPE HTML>" +
+								"<html>" +
+									"<body>" +
+										"<h1>Example</h1>" +
+										"<p>King Phillip cut open five green snakes.</p>" +
+									"</body>" +
+								"</html>";
+
+			webView.loadString( htmlString, "text/html" );*/
+			var file:File = File.applicationDirectory;
+			file = file.resolvePath("index-svg.html")	
+			
+			trace(file.exists);
+			webView.loadString(file.toString(), "text/html" )
+		}		
 
 	}
 	
