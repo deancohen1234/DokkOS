@@ -132,7 +132,8 @@
 			var qr:QRCode = new QRCode();
 			qr.encode("TEST");
 			var img:Bitmap = new Bitmap(qr.bitmapData);
-
+			img.scaleX = 4;
+			img.scaleY = 4;
 			sp.addChild(img);
 
 			addChild(sp);
