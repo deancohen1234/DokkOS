@@ -17,9 +17,23 @@
 	
 	import flash.media.StageWebView;
 	
+	import org.qrcode.QRCode;
+
+	
 	import com.adobe.nativeExtensions.Vibration;
+	import com.myflashlab.air.extensions.barcode.Barcode;
+	import com.myflashlab.air.extensions.barcode.BarcodeEvent;
+	import com.myflashlab.air.extensions.nativePermissions.PermissionCheck;
+	import com.myflashlab.air.extensions.dependency.OverrideAir;
+	
+	
+	
+	//import BarcodeMaterials;
+	
+	
 	
 	public class Main extends Sprite {
+		
 
 		private var startScreenSprite:Sprite;
 		private var mainScreenSprite:Sprite;
@@ -92,11 +106,11 @@
 				vibration.vibrate(2000);
 			}
 			
-			var webView:StageWebView = new StageWebView();
+			/*var webView:StageWebView = new StageWebView();
 			webView.stage = this.stage;
 			webView.viewPort = new Rectangle( 0, 0, stage.stageWidth, stage.stageHeight );
 
-		/*var htmlString:String = "<!DOCTYPE HTML>" +
+		var htmlString:String = "<!DOCTYPE HTML>" +
 								"<html>" +
 									"<body>" +
 										"<h1>Example</h1>" +
@@ -104,13 +118,44 @@
 									"</body>" +
 								"</html>";
 
-			webView.loadString( htmlString, "text/html" );*/
+			
+			//webView.loadString( htmlString, "text/html" );
 			var file:File = File.applicationDirectory;
 			file = file.resolvePath("index-svg.html")	
 			
-			trace(file.exists);
-			webView.loadString(file.toString(), "text/html" )
-		}		
+			var workingFile:File = File.createTempFile();
+			file.copyTo( workingFile, true );
+			
+			webView.loadURL(workingFile.url);*/
+			
+			var sp:Sprite = new Sprite();
+			var qr:QRCode = new QRCode();
+			qr.encode("TEST");
+			var img:Bitmap = new Bitmap(qr.bitmapData);
+
+			sp.addChild(img);
+
+			addChild(sp);
+			
+			//webView.loadString( htmlString, "text/html" );
+			
+			//var htmlLoader:HTMLLoader = new HTMLLoader();
+			//var addressDestination:URLRequest = new URLRequest("www.youtube.com");
+			
+			//htmlLoader.width = 400; 
+			//htmlLoader.height = 600; 
+			
+			//htmlLoader.load(addressDestination);
+			//htmlLoader.addEventListener(Event.COMPLETE, onComplete);
+			
+			//trace(file.exists);
+			//addChild(htmlLoader);
+			//webView.loadString(file.toString(), "text/html" )
+		}
+		
+		private function onComplete (evt:Event):void {
+			trace("Completed");
+		}
 
 	}
 	
