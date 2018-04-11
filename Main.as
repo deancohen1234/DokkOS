@@ -26,6 +26,8 @@
 	import com.myflashlab.air.extensions.nativePermissions.PermissionCheck;
 	import com.myflashlab.air.extensions.dependency.OverrideAir;
 	
+	import BarcodeReader;
+	
 	
 	
 	//import BarcodeMaterials;
@@ -84,7 +86,7 @@
 
 			mainScreenSprite.addChild(libraryImage);
 			
-			mainScreenSprite.addEventListener(TouchEvent.TOUCH_BEGIN, OnOpenPersonalBarcode);
+			mainScreenSprite.addEventListener(TouchEvent.TOUCH_BEGIN, OnOpenBarcodeReader);
 		}
 		
 		private function OnTouchTap(evt:TouchEvent):void 
@@ -106,28 +108,6 @@
 				vibration.vibrate(2000);
 			}
 			
-			/*var webView:StageWebView = new StageWebView();
-			webView.stage = this.stage;
-			webView.viewPort = new Rectangle( 0, 0, stage.stageWidth, stage.stageHeight );
-
-		var htmlString:String = "<!DOCTYPE HTML>" +
-								"<html>" +
-									"<body>" +
-										"<h1>Example</h1>" +
-										"<p>King Phillip cut open five green snakes.</p>" +
-									"</body>" +
-								"</html>";
-
-			
-			//webView.loadString( htmlString, "text/html" );
-			var file:File = File.applicationDirectory;
-			file = file.resolvePath("index-svg.html")	
-			
-			var workingFile:File = File.createTempFile();
-			file.copyTo( workingFile, true );
-			
-			webView.loadURL(workingFile.url);*/
-			
 			var sp:Sprite = new Sprite();
 			var qr:QRCode = new QRCode();
 			qr.encode("TEST");
@@ -138,24 +118,13 @@
 
 			addChild(sp);
 			
-			//webView.loadString( htmlString, "text/html" );
-			
-			//var htmlLoader:HTMLLoader = new HTMLLoader();
-			//var addressDestination:URLRequest = new URLRequest("www.youtube.com");
-			
-			//htmlLoader.width = 400; 
-			//htmlLoader.height = 600; 
-			
-			//htmlLoader.load(addressDestination);
-			//htmlLoader.addEventListener(Event.COMPLETE, onComplete);
-			
-			//trace(file.exists);
-			//addChild(htmlLoader);
-			//webView.loadString(file.toString(), "text/html" )
 		}
 		
-		private function onComplete (evt:Event):void {
-			trace("Completed");
+		private function OnOpenBarcodeReader(evt:TouchEvent):void 
+		{
+			trace("You I can read yes.");
+			var barcode:BarcodeReader = new BarcodeReader(stage);
+			addChild(barcode);
 		}
 
 	}

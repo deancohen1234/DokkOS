@@ -1,5 +1,4 @@
-﻿package BarcodeMaterials{
-	
+﻿package  {
 	import com.myflashlab.air.extensions.barcode.Barcode;
 	import com.myflashlab.air.extensions.barcode.BarcodeEvent;
 	import com.myflashlab.air.extensions.nativePermissions.PermissionCheck;
@@ -30,9 +29,9 @@
 	import flash.ui.Keyboard;
 	import flash.events.KeyboardEvent;
 	import com.doitflash.mobileProject.commonCpuSrc.DeviceInfo;
-	
-	public class Barcode extends Sprite {
-		
+	import flash.display.Stage;
+
+	public class BarcodeReader extends Sprite {
 		private var _ex:Barcode;
 		private var _exPermissions:PermissionCheck = new PermissionCheck();
 		
@@ -43,17 +42,22 @@
 		private var _body:Sprite;
 		private var _list:List;
 		private var _numRows:int = 1;
+		
+		private var s:Stage;
 
-		public function Barcode() {
+		public function BarcodeReader(_s:Stage) {
+			
+			s = _s;
+			// constructor code
 			Multitouch.inputMode = MultitouchInputMode.GESTURE;
 			NativeApplication.nativeApplication.addEventListener(Event.ACTIVATE, handleActivate, false, 0, true);
 			NativeApplication.nativeApplication.addEventListener(Event.DEACTIVATE, handleDeactivate, false, 0, true);
 			NativeApplication.nativeApplication.addEventListener(InvokeEvent.INVOKE, onInvoke, false, 0, true);
 			NativeApplication.nativeApplication.addEventListener(KeyboardEvent.KEY_DOWN, handleKeys, false, 0, true);
 			
-			stage.addEventListener(Event.RESIZE, onResize);
-			stage.scaleMode = StageScaleMode.NO_SCALE;
-			stage.align = StageAlign.TOP_LEFT;
+			s.addEventListener(Event.RESIZE, onResize);
+			s.scaleMode = StageScaleMode.NO_SCALE;
+			s.align = StageAlign.TOP_LEFT;
 			
 			C.startOnStage(this, "`");
 			C.commandLine = false;
@@ -125,24 +129,24 @@
 		{
 			if (_txt)
 			{
-				_txt.width = stage.stageWidth * (1 / DeviceInfo.dpiScaleMultiplier);
+				_txt.width = s.stageWidth * (1 / DeviceInfo.dpiScaleMultiplier);
 				
 				C.x = 0;
 				C.y = _txt.y + _txt.height + 0;
-				C.width = stage.stageWidth * (1 / DeviceInfo.dpiScaleMultiplier);
+				C.width = s.stageWidth * (1 / DeviceInfo.dpiScaleMultiplier);
 				C.height = 300 * (1 / DeviceInfo.dpiScaleMultiplier);
 			}
 			
 			if (_list)
 			{
-				_numRows = Math.floor(stage.stageWidth / (BTN_WIDTH * DeviceInfo.dpiScaleMultiplier + BTN_SPACE));
+				_numRows = Math.floor(s.stageWidth / (BTN_WIDTH * DeviceInfo.dpiScaleMultiplier + BTN_SPACE));
 				_list.row = _numRows;
 				_list.itemArrange();
 			}
 			
 			if (_body)
 			{
-				_body.y = stage.stageHeight - _body.height;
+				_body.y = s.stageHeight - _body.height;
 			}
 		}
 		
