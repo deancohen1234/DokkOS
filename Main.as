@@ -34,7 +34,7 @@
 	
 	
 	
-	public class Main extends Sprite {
+	public class Main extends MovieClip {
 		
 
 		private var startScreenSprite:Sprite;
@@ -43,10 +43,13 @@
 		
 		private var vibration:Vibration;
 		
+		private var returnFrameIndex = 1;
+		
 		private var htmlStageView:StageWebView = new StageWebView()
 		
 		public function Main() 
 		{
+			gotoAndStop(1);
 			qrSprite = new Sprite();
 			Multitouch.inputMode=MultitouchInputMode.TOUCH_POINT; 
 			htmlStageView.viewPort = new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
@@ -58,50 +61,32 @@
 		public function DisplayStartScreen():void
 
 		{
-			//instantiate the bitmap in the library by its identifier
-			startScreenSprite = new Sprite();//create an image container
-
-			addChild(startScreenSprite);//add it to the display list
-
-			var libraryImage:Bitmap = new Bitmap(new StartScreen(0,0));
-			libraryImage.x -= 10;
-			libraryImage.y -= 10;
-			//place the image in the image container
-
-			startScreenSprite.addChild(libraryImage);
+			trace(startScreen);
 			
-			startScreenSprite.addEventListener(TouchEvent.TOUCH_BEGIN, OnTouchTap);
+			startScreen.addEventListener(TouchEvent.TOUCH_BEGIN, OnTouchTap);
 
-		}
-		
-		public function DisplayMainScreen():void 
-		{
-			//instantiate the bitmap in the library by its identifier
-			mainScreenSprite = new Sprite();//create an image container
-
-			addChild(mainScreenSprite);//add it to the display list
-
-			var libraryImage:Bitmap = new Bitmap(new MainScreen(0,0));
-			//place the image in the image container
-
-			mainScreenSprite.addChild(libraryImage);
-			
-			mainScreenSprite.addEventListener(TouchEvent.TOUCH_BEGIN, OnOpenBarcodeReader);
 		}
 		
 		private function OnTouchTap(evt:TouchEvent):void 
 		{
 			trace("OnTouch");
+			gotoAndStop(2);
+			DisplayMainMenu();
 			
-			startScreenSprite.removeChildAt(0);
-			
-			DisplayMainScreen();
+		}
+		
+		public function DisplayMainMenu():void 
+		{
+			viewer_Button.addEventListener(TouchEvent.TOUCH_BEGIN, OnOpenPersonalBarcode);
+			scanner_Button.addEventListener(TouchEvent.TOUCH_BEGIN, OnOpenBarcodeReader);
 		}
 		
 		private function OnOpenPersonalBarcode(evt:TouchEvent):void 
 		{	
-			mainScreenSprite.removeChildAt(0);
 			//vibrate
+			gotoAndStop(5);
+			returnFrameIndex = 2;
+			viewer_Return.addEventListener(TouchEvent.TOUCH_BEGIN, ReturnHome);
 			if (Vibration.isSupported) 
 			{
 				vibration = new Vibration();
@@ -110,7 +95,7 @@
 			
 			var sp:Sprite = new Sprite();
 			var qr:QRCode = new QRCode();
-			qr.encode("TEST");
+			qr.encode("Domo Arigat0 Mr. Roboto");
 			var img:Bitmap = new Bitmap(qr.bitmapData);
 			img.scaleX = 4;
 			img.scaleY = 4;
@@ -122,9 +107,30 @@
 		
 		private function OnOpenBarcodeReader(evt:TouchEvent):void 
 		{
+			gotoAndStop(7);
+			returnFrameIndex = 2;
+			reader_Return.addEventListener(TouchEvent.TOUCH_BEGIN, ReturnHome);
 			trace("You I can read yes.");
 			var barcode:BarcodeReader = new BarcodeReader(stage);
 			addChild(barcode);
+		}
+		
+		private function ReturnHome(evt:Event):void 
+		{
+			//gotoAndStop(1);
+			var i:int = 0;
+			//gotoAndStop(returnFrameIndex);
+			for (i = 0; i < numChildren; i++) 
+			{
+				if (getChildAt(i) is Sprite) 
+				{
+					trace (getChildAt(i).name);
+					removeChildAt(i);
+				}
+			}
+			//gotoAndStop(2);
+			OnTouchTap(null);
+			
 		}
 
 	}
