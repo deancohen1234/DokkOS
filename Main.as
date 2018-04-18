@@ -107,12 +107,16 @@
 		
 		private function OnOpenBarcodeReader(evt:TouchEvent):void 
 		{
-			gotoAndStop(7);
 			returnFrameIndex = 2;
-			reader_Return.addEventListener(TouchEvent.TOUCH_BEGIN, ReturnHome);
+			
 			trace("You I can read yes.");
 			var barcode:BarcodeReader = new BarcodeReader(stage);
-			addChild(barcode);
+			//addChild(barcode);
+			
+			gotoAndStop(7);
+			
+			reader_Return.addEventListener(TouchEvent.TOUCH_BEGIN, ReturnHome);
+			
 		}
 		
 		private function ReturnHome(evt:Event):void 

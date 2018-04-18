@@ -55,11 +55,11 @@
 			NativeApplication.nativeApplication.addEventListener(InvokeEvent.INVOKE, onInvoke, false, 0, true);
 			NativeApplication.nativeApplication.addEventListener(KeyboardEvent.KEY_DOWN, handleKeys, false, 0, true);
 			
-			s.addEventListener(Event.RESIZE, onResize);
+			/*s.addEventListener(Event.RESIZE, onResize);
 			s.scaleMode = StageScaleMode.NO_SCALE;
-			s.align = StageAlign.TOP_LEFT;
+			s.align = StageAlign.TOP_LEFT;*/
 			
-			C.startOnStage(this, "`");
+			/*C.startOnStage(this, "`");
 			C.commandLine = false;
 			C.commandLineAllowed = false;
 			C.x = 100;
@@ -67,9 +67,9 @@
 			C.height = 250;
 			C.strongRef = true;
 			C.visible = true;
-			C.scaleX = C.scaleY = DeviceInfo.dpiScaleMultiplier;
+			C.scaleX = C.scaleY = DeviceInfo.dpiScaleMultiplier;*/
 			
-			_txt = new TextField();
+			/*_txt = new TextField();
 			_txt.autoSize = TextFieldAutoSize.LEFT;
 			_txt.antiAliasType = AntiAliasType.ADVANCED;
 			_txt.multiline = true;
@@ -88,7 +88,7 @@
 			_list.orientation = Orientation.VERTICAL;
 			_list.hDirection = Direction.LEFT_TO_RIGHT;
 			_list.vDirection = Direction.TOP_TO_BOTTOM;
-			_list.space = BTN_SPACE;
+			_list.space = BTN_SPACE;*/
 			
 			// remove this line in production build or pass null as the delegate
 			OverrideAir.enableDebugger(myDebuggerDelegate);
@@ -189,14 +189,16 @@
 			_ex.addEventListener(BarcodeEvent.RESULT, onResult);
 			_ex.addEventListener(BarcodeEvent.CANCEL, onCancel);
 			
-			if(_ex.os == Barcode.ANDROID)
+			open(null);
+			
+			/*if(_ex.os == Barcode.ANDROID)
 			{
 				var btn0:MySprite = createBtn("warmup");
 				btn0.addEventListener(MouseEvent.CLICK, warmup);
 				_list.add(btn0);
-			}
+			}*/
 			
-			function warmup(e:MouseEvent):void
+			/*function warmup(e:MouseEvent):void
 			{
 				// to speed up the launch time on Android, you may call the warmup method when
 				// it is appropriate in your application. This may be needed if you are using the
@@ -204,11 +206,11 @@
 				
 				C.log("the first time you call the warmup method, your app will freeze for a few seconds...");
 				_ex.warmup();
-			}
+			}*/
 			
-			var btn1:MySprite = createBtn("open Scanner");
+			/*var btn1:MySprite = createBtn("open Scanner");
 			btn1.addEventListener(MouseEvent.CLICK, open);
-			_list.add(btn1);
+			_list.add(btn1);*/
 			
 			function open(e:MouseEvent):void
 			{
@@ -232,12 +234,13 @@
 				}
 			}
 			
-			onResize();
+			//onResize();
 		}
 		
 		private function onCancel(e:BarcodeEvent):void
 		{
 			C.log("scan canceled")
+			removeChild(this);
 		}
 		
 		private function onResult(e:BarcodeEvent):void
@@ -247,6 +250,8 @@
 			
 			trace("type is: ", e.param.type)
 			trace("data is: ", e.param.data);
+			
+			removeChild(this);
 		}
 		
 		private function createBtn($str:String):MySprite
