@@ -144,6 +144,26 @@
   
   
   
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   <extensions>
     <extensionID>com.adobe.Vibration</extensionID>
     <extensionID>com.myflashlab.air.extensions.dependency.androidSupport</extensionID>
@@ -161,5 +181,6 @@
     <extensionID>com.myflashlab.air.extensions.dependency.googlePlayServices.basement</extensionID>
     <extensionID>com.myflashlab.air.extensions.dependency.googlePlayServices.tasks</extensionID>
     <extensionID>com.myflashlab.air.extensions.firebase.core</extensionID>
+    <extensionID>com.myflashlab.air.extensions.firebase.auth</extensionID>
   </extensions>
 </application>

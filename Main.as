@@ -22,6 +22,7 @@
 	
 	import com.myflashlab.air.extensions.firebase.core.Firebase;
 	import com.myflashlab.air.extensions.firebase.db.*;
+	import com.myflashlab.air.extensions.firebase.auth.*;
 
 	
 	import com.adobe.nativeExtensions.Vibration;
@@ -61,9 +62,8 @@
 			htmlStageView.viewPort = new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
 			//htmlStageView.stage = this.stage;
 			trace("Working");
-			DisplayStartScreen();
-			
 			SetupFirebase();
+			DisplayStartScreen();
 		}
 		
 		private function SetupFirebase():void
@@ -72,6 +72,7 @@
 			Firebase.init();
 			//initilize firebase realitme database
 			DB.init();
+			
 		}
 		
 		public function DisplayStartScreen():void
@@ -79,26 +80,39 @@
 		{
 			trace(startScreen);
 			
-			startScreen.addEventListener(TouchEvent.TOUCH_BEGIN, OnTouchTap);
+			confirmName_Button.addEventListener(TouchEvent.TOUCH_BEGIN, OnTouchTap);
 
 		}
 		
 		private function OnTouchTap(evt:TouchEvent):void 
 		{
-			var myRef:DBReference = DB.getReference("katsenjager");
-			trace(myRef);
+			if (currentFrame == 1)
+			{
+				SendNameToDatabase(inputTextBox.text);
+			}
 			
-			var userInfo:Object = new Object();
-			userInfo.title = "Dr.";
-			userInfo.name = "Steve Jackson";
-			userInfo.timestamp = new Date().getTime();
 			
-			myRef.setValue(userInfo);
 
 			trace("OnTouch");
 			gotoAndStop(2);
 			DisplayMainMenu();
 			
+		}
+		
+		private function SendNameToDatabase(s:String) :void
+		{
+			var myRef:DBReference = DB.getReference("UserNames");
+			
+			var userInfo:Object = new Object();
+			userInfo.name = s;
+			userInfo.timestamp = new Date().getTime();
+			
+			var key:String = myRef.child("users").push().key;			
+			
+			var map:Object = {};
+			map["/users/" + key] = userInfo;
+			
+			myRef.updateChildren(map);
 		}
 		
 		public function DisplayMainMenu():void 
