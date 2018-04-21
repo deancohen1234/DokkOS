@@ -19,6 +19,9 @@
 	import flash.media.StageWebView;
 	
 	import org.qrcode.QRCode;
+	
+	import com.myflashlab.air.extensions.firebase.core.Firebase;
+	import com.myflashlab.air.extensions.firebase.db.*;
 
 	
 	import com.adobe.nativeExtensions.Vibration;
@@ -59,6 +62,16 @@
 			//htmlStageView.stage = this.stage;
 			trace("Working");
 			DisplayStartScreen();
+			
+			SetupFirebase();
+		}
+		
+		private function SetupFirebase():void
+		{
+			trace ("Setting up firebase");
+			Firebase.init();
+			//initilize firebase realitme database
+			DB.init();
 		}
 		
 		public function DisplayStartScreen():void
@@ -72,6 +85,16 @@
 		
 		private function OnTouchTap(evt:TouchEvent):void 
 		{
+			var myRef:DBReference = DB.getReference("katsenjager");
+			trace(myRef);
+			
+			var userInfo:Object = new Object();
+			userInfo.title = "Dr.";
+			userInfo.name = "Steve Jackson";
+			userInfo.timestamp = new Date().getTime();
+			
+			myRef.setValue(userInfo);
+
 			trace("OnTouch");
 			gotoAndStop(2);
 			DisplayMainMenu();
@@ -174,14 +197,14 @@
 			if (Vibration.isSupported) 
 			{
 				vibration = new Vibration();
-				vibration.vibrate(7000);
+				vibration.vibrate(12000);
 			}
 			addEventListener(Event.ENTER_FRAME, OnEnterFrame);
 		}
 		
 		private function OnEnterFrame(evt:Event):void 
 		{
-			if (currentFrame == 175)
+			if (currentFrame == 288)
 			{
 				ReturnHome(null);
 				removeEventListener(Event.ENTER_FRAME, OnEnterFrame);

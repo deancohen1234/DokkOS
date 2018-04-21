@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+﻿<?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <!-- 
 	Usage:
 
@@ -16,7 +16,7 @@
 	<text xml:lang="ja">Japanese App name goes here</text>
 	</name>
 -->
-<application xmlns="http://ns.adobe.com/air/application/26.0">
+<application xmlns="http://ns.adobe.com/air/application/27.0">
   <id>Main</id>
   <versionNumber>1.0.0</versionNumber>
   <versionLabel></versionLabel>
@@ -48,6 +48,8 @@
   <android>
     <manifestAdditions><![CDATA[<manifest android:installLocation="auto">
             <uses-permission android:name="android.permission.INTERNET" />
+			<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+			<uses-permission android:name="android.permission.WAKE_LOCK"/>
             <!--You surely need permission to use the camera, right?-->
             <uses-permission android:name="android.permission.CAMERA" />
             <uses-feature android:name="android.hardware.camera" />
@@ -55,6 +57,11 @@
             <uses-feature android:name="android.hardware.screen.landscape" />
             <!--If you wish to use the vibration when a barcode is detected, you need to set the permission like below-->
             <uses-permission android:name="android.permission.VIBRATE"/>
+			
+			<uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+			<permission android:name="air.com.site.Main.permission.C2D_MESSAGE" android:protectionLevel="signature" />
+			<uses-permission android:name="air.com.site.Main.permission.C2D_MESSAGE" />			
+			
             <!--Android 15 or higher can support this ANE-->
             <uses-sdk android:minSdkVersion="15" />
             <!--The new Permission thing on Android works ONLY if you are targetting Android SDK 23 or higher-->
@@ -75,8 +82,51 @@
                     <action android:name="android.intent.action.VIEW" />
                     <category android:name="android.intent.category.BROWSABLE" />
                     <category android:name="android.intent.category.DEFAULT" />
+					
+					<data android:scheme="air.com.site.Main.firebaseCore" />
                 </intent-filter>
             </activity>
+
+			<provider
+			android:name="com.google.firebase.provider.FirebaseInitProvider"
+			android:authorities="air.com.site.Main.firebaseinitprovider"
+			android:exported="false"
+			android:initOrder="100" />
+			
+			<service
+			android:name="com.myflashlab.firebase.core.MyFirebaseInstanceIdService"
+			android:exported="true">
+			<intent-filter>
+				<action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+			</intent-filter>
+			</service>
+			
+			<meta-data 
+			android:name="com.google.android.gms.version" 
+			android:value="@integer/google_play_services_version" />
+			
+			<receiver
+            android:name="com.google.firebase.iid.FirebaseInstanceIdReceiver"
+            android:exported="true"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <category android:name="air.com.site.Main.firebaseCore" />
+            </intent-filter>
+        </receiver>
+		
+		<receiver android:name="com.google.firebase.iid.FirebaseInstanceIdInternalReceiver" android:exported="false" />
+		<service android:name="com.google.firebase.iid.FirebaseInstanceIdService" android:exported="true">
+            <intent-filter android:priority="-500">
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+		
+		<!-- Required by googlePlayServices_base.ane -->
+		<activity android:name="com.google.android.gms.common.api.GoogleApiActivity"
+                  android:theme="@android:style/Theme.Translucent.NoTitleBar"
+                  android:exported="false"/>
+			
             <!--Main activity for detecting barcodes-->
             <activity 	android:name="com.google.zxing.client.android.CaptureActivity"
                 android:clearTaskOnLaunch="true"
@@ -89,9 +139,7 @@
             <activity 	android:name="com.doitflash.barcode.utils.ExBridge"
             android:theme="@style/Theme.Transparent" />
             </application>
-<uses-permission android:name="android.permission.INTERNET"/>
 <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-<uses-permission android:name="android.permission.VIBRATE"/>
 </manifest>]]></manifestAdditions>
   </android>
   
@@ -212,5 +260,15 @@
     <extensionID>com.myflashlab.air.extensions.barcode</extensionID>
     <extensionID>com.myflashlab.air.extensions.dependency.overrideAir</extensionID>
     <extensionID>com.myflashlab.air.extensions.permissionCheck</extensionID>
+	
+	<extensionID>com.myflashlab.air.extensions.dependency.firebase.common</extensionID>
+	<extensionID>com.myflashlab.air.extensions.dependency.firebase.iid</extensionID>
+	<extensionID>com.myflashlab.air.extensions.dependency.googlePlayServices.appinvite</extensionID>
+	<extensionID>com.myflashlab.air.extensions.dependency.googlePlayServices.base</extensionID>
+	<extensionID>com.myflashlab.air.extensions.dependency.googlePlayServices.basement</extensionID>
+	<extensionID>com.myflashlab.air.extensions.dependency.googlePlayServices.tasks</extensionID>
+	
+	<!-- And finally embed the Firebase core ANE -->
+	<extensionID>com.myflashlab.air.extensions.firebase.core</extensionID>
   </extensions>
 </application>

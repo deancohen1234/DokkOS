@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "559636150672",
+    "firebase_url": "https://katsenjager.firebaseio.com",
+    "project_id": "katsenjager",
+    "storage_bucket": "katsenjager.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:559636150672:android:9d34b5ac182a3eb1",
+        "android_client_info": {
+          "package_name": "air.com.site.Main"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "559636150672-geu4le8kcb8s73pjb1adn8dqlkm8huhq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAxaSD4eLdZElickOwaenL1NsGf55foPIg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
