@@ -258,6 +258,7 @@
 			
 			//removeChild(this);
 			
+			fixYourShit();
 			
 		}
 		private function fixYourShit():void 

@@ -93,11 +93,11 @@
 			gotoAndStop(5);
 			returnFrameIndex = 2;
 			viewer_Return.addEventListener(TouchEvent.TOUCH_BEGIN, ReturnHome);
-			if (Vibration.isSupported) 
+			/*if (Vibration.isSupported) 
 			{
 				vibration = new Vibration();
 				vibration.vibrate(2000);
-			}
+			}*/
 			
 			var sp:Sprite = new Sprite();
 			var qr:QRCode = new QRCode();
@@ -171,12 +171,17 @@
 		private function OnStartHack (evt:Event):void 
 		{
 			gotoAndPlay(9);
+			if (Vibration.isSupported) 
+			{
+				vibration = new Vibration();
+				vibration.vibrate(7000);
+			}
 			addEventListener(Event.ENTER_FRAME, OnEnterFrame);
 		}
 		
 		private function OnEnterFrame(evt:Event):void 
 		{
-			if (currentFrame == 78)
+			if (currentFrame == 175)
 			{
 				ReturnHome(null);
 				removeEventListener(Event.ENTER_FRAME, OnEnterFrame);
