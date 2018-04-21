@@ -16,7 +16,7 @@
 	<text xml:lang="ja">Japanese App name goes here</text>
 	</name>
 -->
-<application xmlns="http://ns.adobe.com/air/application/27.0">
+<application xmlns="http://ns.adobe.com/air/application/26.0">
   <id>DokkOS</id>
   <versionNumber>1.0.0</versionNumber>
   <versionLabel/>
@@ -89,6 +89,10 @@
 <uses-permission android:name="android.permission.VIBRATE"/>
 </manifest>]]></manifestAdditions>
   </android>
+  
+  
+  
+  
   
   
   

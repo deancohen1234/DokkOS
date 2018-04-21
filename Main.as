@@ -167,6 +167,21 @@
 			OnTouchTap(null);
 			
 		}
+		
+		private function OnStartHack (evt:Event):void 
+		{
+			gotoAndPlay(9);
+			addEventListener(Event.ENTER_FRAME, OnEnterFrame);
+		}
+		
+		private function OnEnterFrame(evt:Event):void 
+		{
+			if (currentFrame == 78)
+			{
+				ReturnHome(null);
+				removeEventListener(Event.ENTER_FRAME, OnEnterFrame);
+			}
+		}
 
 	}
 	
