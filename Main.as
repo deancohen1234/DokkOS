@@ -1,5 +1,6 @@
 ﻿package  {
 	import flash.display.MovieClip;
+	import flash.events.MouseEvent;
 	import flash.display.Sprite;
 	import flash.display.Bitmap;
 	import flash.events.Event;
@@ -47,6 +48,8 @@
 		
 		private var htmlStageView:StageWebView = new StageWebView()
 		
+		private var barcodeInstance:BarcodeReader;
+		
 		public function Main() 
 		{
 			gotoAndStop(1);
@@ -79,6 +82,8 @@
 		{
 			viewer_Button.addEventListener(TouchEvent.TOUCH_BEGIN, OnOpenPersonalBarcode);
 			scanner_Button.addEventListener(TouchEvent.TOUCH_BEGIN, OnOpenBarcodeReader);
+			scanner_Button.addEventListener(MouseEvent.CLICK, OnOpenBarcodeReader);
+			trace("SEE MEEEE");
 		}
 		
 		private function OnOpenPersonalBarcode(evt:TouchEvent):void 
@@ -110,13 +115,38 @@
 			returnFrameIndex = 2;
 			
 			trace("You I can read yes.");
+
+			
 			var barcode:BarcodeReader = new BarcodeReader(stage);
+			barcode.addEventListener("CALLBACK", CustomCallback);
+			
+			barcodeInstance = barcode;
+			
 			//addChild(barcode);
 			
 			gotoAndStop(7);
-			
+			//setChildIndex(barcode, 0);
+			//setChildIndex(reader_Return, numChildren - 1);
 			reader_Return.addEventListener(TouchEvent.TOUCH_BEGIN, ReturnHome);
 			
+		}
+		
+		private function CustomCallback(evt:Event):void 
+		{
+			trace("Callback worked");
+			
+			//gotoAndStop(2);
+			
+			barcodeInstance = null;
+			//DisplayMainMenu();
+			//ResetButtonDepths();
+			ReturnHome(null);
+		}
+		
+		private function ResetButtonDepths():void
+		{
+			setChildIndex(reader_Return, numChildren - 1);
+			setChildIndex(viewer_Return, numChildren - 1);
 		}
 		
 		private function ReturnHome(evt:Event):void 

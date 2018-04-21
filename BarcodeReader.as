@@ -30,8 +30,9 @@
 	import flash.events.KeyboardEvent;
 	import com.doitflash.mobileProject.commonCpuSrc.DeviceInfo;
 	import flash.display.Stage;
+	import flash.display.MovieClip;
 
-	public class BarcodeReader extends Sprite {
+	public class BarcodeReader extends MovieClip {
 		private var _ex:Barcode;
 		private var _exPermissions:PermissionCheck = new PermissionCheck();
 		
@@ -49,7 +50,7 @@
 			
 			s = _s;
 			// constructor code
-			Multitouch.inputMode = MultitouchInputMode.GESTURE;
+			//Multitouch.inputMode = MultitouchInputMode.GESTURE;
 			NativeApplication.nativeApplication.addEventListener(Event.ACTIVATE, handleActivate, false, 0, true);
 			NativeApplication.nativeApplication.addEventListener(Event.DEACTIVATE, handleDeactivate, false, 0, true);
 			NativeApplication.nativeApplication.addEventListener(InvokeEvent.INVOKE, onInvoke, false, 0, true);
@@ -240,7 +241,11 @@
 		private function onCancel(e:BarcodeEvent):void
 		{
 			C.log("scan canceled")
-			removeChild(this);
+			//removeChild(this);
+			
+			trace ("On Cancel");
+			
+			fixYourShit();
 		}
 		
 		private function onResult(e:BarcodeEvent):void
@@ -251,7 +256,14 @@
 			trace("type is: ", e.param.type)
 			trace("data is: ", e.param.data);
 			
-			removeChild(this);
+			//removeChild(this);
+			
+			
+		}
+		private function fixYourShit():void 
+		{
+			var callback:Event = new Event("CALLBACK");
+			this.dispatchEvent(callback);
 		}
 		
 		private function createBtn($str:String):MySprite
