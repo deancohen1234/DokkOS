@@ -83,6 +83,7 @@
 			viewer_Button.addEventListener(TouchEvent.TOUCH_BEGIN, OnOpenPersonalBarcode);
 			scanner_Button.addEventListener(TouchEvent.TOUCH_BEGIN, OnOpenBarcodeReader);
 			scanner_Button.addEventListener(MouseEvent.CLICK, OnOpenBarcodeReader);
+			hack_Button.addEventListener(TouchEvent.TOUCH_BEGIN, OnStartHack);
 			trace("SEE MEEEE");
 		}
 		
