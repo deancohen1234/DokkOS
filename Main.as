@@ -75,6 +75,18 @@
 			
 		}
 		
+		private function onDataChange(e:DBEvents):void
+{
+		if (e.dataSnapshot.exists)
+		{
+			if (e.dataSnapshot.value is String) 		trace("String value = " + e.dataSnapshot.value);
+			else if (e.dataSnapshot.value is Number) 	trace("Number value = " + e.dataSnapshot.value);
+			else if (e.dataSnapshot.value is Boolean) 	trace("Boolean value = " + e.dataSnapshot.value);
+			else if (e.dataSnapshot.value is Array) 	trace("Array value = " + JSON.stringify(e.dataSnapshot.value));
+			else 										trace("Object value = " + JSON.stringify(e.dataSnapshot.value));
+		}
+}
+		
 		public function DisplayStartScreen():void
 
 		{
@@ -113,6 +125,23 @@
 			map["/users/" + key] = userInfo;
 			
 			myRef.updateChildren(map);
+			
+			//myRef.addEventListener(DBEvents.VALUE_CHANGED, onDataChange);
+			var myQuery:DBQuery = myRef.child("user").child("-LAeDY16_RoXrrLxN-hH").limitToFirst(100);
+			myQuery.addEventListener(DBEvents.VALUE_CHANGED, QueryAttempted);
+			
+		}
+		
+		private function QueryAttempted(e:DBEvents):void 
+		{
+			if (e.dataSnapshot.exists)
+		{
+			if (e.dataSnapshot.value is String) 		trace("String value = " + e.dataSnapshot.value);
+			else if (e.dataSnapshot.value is Number) 	trace("Number value = " + e.dataSnapshot.value);
+			else if (e.dataSnapshot.value is Boolean) 	trace("Boolean value = " + e.dataSnapshot.value);
+			else if (e.dataSnapshot.value is Array) 	trace("Array value = " + JSON.stringify(e.dataSnapshot.value));
+			else 										trace("Object value = " + JSON.stringify(e.dataSnapshot.value));
+		}
 		}
 		
 		public function DisplayMainMenu():void 
