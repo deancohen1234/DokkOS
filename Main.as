@@ -75,17 +75,17 @@
 			
 		}
 		
-		private function onDataChange(e:DBEvents):void
-{
-		if (e.dataSnapshot.exists)
+		function onDataChange2(e:DBEvents):void
 		{
-			if (e.dataSnapshot.value is String) 		trace("String value = " + e.dataSnapshot.value);
-			else if (e.dataSnapshot.value is Number) 	trace("Number value = " + e.dataSnapshot.value);
-			else if (e.dataSnapshot.value is Boolean) 	trace("Boolean value = " + e.dataSnapshot.value);
-			else if (e.dataSnapshot.value is Array) 	trace("Array value = " + JSON.stringify(e.dataSnapshot.value));
-			else 										trace("Object value = " + JSON.stringify(e.dataSnapshot.value));
+			if (e.dataSnapshot.exists)
+			{
+				if (e.dataSnapshot.value is String) 		trace("String value = " + e.dataSnapshot.value);
+				else if (e.dataSnapshot.value is Number) 	trace("Number value = " + e.dataSnapshot.value);
+				else if (e.dataSnapshot.value is Boolean) 	trace("Boolean value = " + e.dataSnapshot.value);
+				else if (e.dataSnapshot.value is Array) 	trace("Array value = " + JSON.stringify(e.dataSnapshot.value));
+				else 										trace("Object value = " + JSON.stringify(e.dataSnapshot.value));
+			}
 		}
-}
 		
 		public function DisplayStartScreen():void
 
@@ -100,6 +100,7 @@
 		{
 			if (currentFrame == 1)
 			{
+				trace("Sending data to database");
 				SendNameToDatabase(inputTextBox.text);
 			}
 			
@@ -114,6 +115,9 @@
 		private function SendNameToDatabase(s:String) :void
 		{
 			var myRef:DBReference = DB.getReference("UserNames");
+			var ref:DBReference = DB.getReference("UserNames").child("users").child("-LAeDY16_RoXrrLxN-hH");
+			myRef.addEventListener(DBEvents.VALUE_CHANGED, onDataChange2);
+			ref.addEventListener(DBEvents.VALUE_CHANGED, onDataChange2);
 			
 			var userInfo:Object = new Object();
 			userInfo.name = s;
@@ -127,8 +131,8 @@
 			myRef.updateChildren(map);
 			
 			//myRef.addEventListener(DBEvents.VALUE_CHANGED, onDataChange);
-			var myQuery:DBQuery = myRef.child("user").child("-LAeDY16_RoXrrLxN-hH").limitToFirst(100);
-			myQuery.addEventListener(DBEvents.VALUE_CHANGED, QueryAttempted);
+			//var myQuery:DBQuery = myRef.child("user").child("-LAeDY16_RoXrrLxN-hH").limitToFirst(100);
+			//myQuery.addEventListener(DBEvents.VALUE_CHANGED, QueryAttempted);
 			
 		}
 		
