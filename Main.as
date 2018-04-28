@@ -54,6 +54,8 @@
 		
 		private var barcodeInstance:BarcodeReader;
 		
+		private var m_PersonalString:String;
+		
 		public function Main() 
 		{
 			gotoAndStop(1);
@@ -83,7 +85,16 @@
 				else if (e.dataSnapshot.value is Number) 	trace("Number value = " + e.dataSnapshot.value);
 				else if (e.dataSnapshot.value is Boolean) 	trace("Boolean value = " + e.dataSnapshot.value);
 				else if (e.dataSnapshot.value is Array) 	trace("Array value = " + JSON.stringify(e.dataSnapshot.value));
-				else 										trace("Object value = " + JSON.stringify(e.dataSnapshot.value));
+				else
+				{
+					trace("Object value = " + JSON.stringify(e.dataSnapshot.value));
+					var object = JSON.parse(JSON.stringify(e.dataSnapshot.value));
+					/*if (object.hackNumber == 100) 
+					{
+						OnStartHack(null);
+					}*/
+					//OnStartHack(null);
+				}
 			}
 		}
 		
@@ -112,40 +123,82 @@
 			
 		}
 		
+		private function OnGetUserDataCallback(e:DBEvents):void
+		{
+			if (e.dataSnapshot.exists)
+			{
+				if (e.dataSnapshot.value is String) 		trace("String value = " + e.dataSnapshot.value);
+				else if (e.dataSnapshot.value is Number) 	trace("Number value = " + e.dataSnapshot.value);
+				else if (e.dataSnapshot.value is Boolean) 	trace("Boolean value = " + e.dataSnapshot.value);
+				else if (e.dataSnapshot.value is Array) 	trace("Array value = " + JSON.stringify(e.dataSnapshot.value));
+				else
+				{
+					var object = JSON.parse(JSON.stringify(e.dataSnapshot.value));
+					trace (object.name + "Get Callback   Hacknumber:" + object.hackNumber);
+					
+					//Re-upload data to hack
+					var myRef:DBReference = DB.getReference("UserNames");
+					
+					if (object.hackNumber == 100) 
+					{
+						OnStartHack(null);
+					}
+					OnStartHack(null);
+					
+					//myRef.child("users").child(m_PersonalString).child("hackNumber").setValue(Math.random());
+					
+				}
+			}
+		}
+		
+		private function GetUserData(id:String) :void 
+		{
+			var searchRef:DBReference = DB.getReference("UserNames").child("users").child(id)
+			searchRef.child("users").child(id).child("hackNumber").setValue(Math.random());
+		}
+		
 		private function SendNameToDatabase(s:String) :void
 		{
 			var myRef:DBReference = DB.getReference("UserNames");
-			var ref:DBReference = DB.getReference("UserNames").child("users").child("-LAeDY16_RoXrrLxN-hH");
-			myRef.addEventListener(DBEvents.VALUE_CHANGED, onDataChange2);
-			ref.addEventListener(DBEvents.VALUE_CHANGED, onDataChange2);
+			//var ref:DBReference = DB.getReference("UserNames").child("users").child("-LAeDY16_RoXrrLxN-hH");
+			//var searchRef:DBReference = DB.getReference("UserNames").child("users").child("-LB7wm3pS0KX46uiMGCK")
+			myRef.addEventListener(DBEvents.SINGLE_VALUE_CHANGED, onDataChange2);
+			//ref.addEventListener(DBEvents.VALUE_CHANGED, onDataChange2);
+			//searchRef.addEventListener(DBEvents.VALUE_CHANGED, onDataChange2);
 			
 			var userInfo:Object = new Object();
 			userInfo.name = s;
 			userInfo.timestamp = new Date().getTime();
+			userInfo.hackNumber = 0;
 			
-			var key:String = myRef.child("users").push().key;			
+			var key:String = myRef.child("users").push().key;
+			m_PersonalString = key;
 			
 			var map:Object = {};
 			map["/users/" + key] = userInfo;
 			
 			myRef.updateChildren(map);
 			
-			//myRef.addEventListener(DBEvents.VALUE_CHANGED, onDataChange);
-			//var myQuery:DBQuery = myRef.child("user").child("-LAeDY16_RoXrrLxN-hH").limitToFirst(100);
-			//myQuery.addEventListener(DBEvents.VALUE_CHANGED, QueryAttempted);
+			var searchRef:DBReference = DB.getReference("UserNames").child("users").child(m_PersonalString)
+			searchRef.addEventListener(DBEvents.VALUE_CHANGED, OnGetUserDataCallback);
 			
 		}
 		
 		private function QueryAttempted(e:DBEvents):void 
 		{
 			if (e.dataSnapshot.exists)
-		{
-			if (e.dataSnapshot.value is String) 		trace("String value = " + e.dataSnapshot.value);
-			else if (e.dataSnapshot.value is Number) 	trace("Number value = " + e.dataSnapshot.value);
-			else if (e.dataSnapshot.value is Boolean) 	trace("Boolean value = " + e.dataSnapshot.value);
-			else if (e.dataSnapshot.value is Array) 	trace("Array value = " + JSON.stringify(e.dataSnapshot.value));
-			else 										trace("Object value = " + JSON.stringify(e.dataSnapshot.value));
-		}
+			{
+				if (e.dataSnapshot.value is String) 		trace("String value = " + e.dataSnapshot.value);
+				else if (e.dataSnapshot.value is Number) 	trace("Number value = " + e.dataSnapshot.value);
+				else if (e.dataSnapshot.value is Boolean) 	trace("Boolean value = " + e.dataSnapshot.value);
+				else if (e.dataSnapshot.value is Array) 	trace("Array value = " + JSON.stringify(e.dataSnapshot.value));
+				else
+				{
+					trace("Object value = " + JSON.stringify(e.dataSnapshot.value));
+					var object = JSON.parse(JSON.stringify(e.dataSnapshot.value));
+					trace (object.name + "   " + object.hackNumber);
+				}
+			}
 		}
 		
 		public function DisplayMainMenu():void 
@@ -171,7 +224,7 @@
 			
 			var sp:Sprite = new Sprite();
 			var qr:QRCode = new QRCode();
-			qr.encode("Domo Arigat0 Mr. Roboto");
+			qr.encode(m_PersonalString);
 			var img:Bitmap = new Bitmap(qr.bitmapData);
 			img.scaleX = 4;
 			img.scaleY = 4;
@@ -205,6 +258,10 @@
 		private function CustomCallback(evt:Event):void 
 		{
 			trace("Callback worked");
+			trace(evt.target.m_Data);
+			
+			//Change value for target to trigger a hack
+			GetUserData(evt.target.m_Data);
 			
 			//gotoAndStop(2);
 			

@@ -45,6 +45,8 @@
 		private var _numRows:int = 1;
 		
 		private var s:Stage;
+		
+		public var m_Data:String;
 
 		public function BarcodeReader(_s:Stage) {
 			
@@ -257,6 +259,7 @@
 			trace("data is: ", e.param.data);
 			
 			//removeChild(this);
+			m_Data = e.param.data;
 			
 			fixYourShit();
 			
