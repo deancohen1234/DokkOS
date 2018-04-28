@@ -108,7 +108,7 @@
 		{
 			trace(startScreen);
 			
-			confirmName_Button.addEventListener(TouchEvent.TOUCH_BEGIN, OnTouchTap);
+			startScreen.addEventListener(TouchEvent.TOUCH_BEGIN, OnTouchTap);
 
 		}
 		

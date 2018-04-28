@@ -19,7 +19,7 @@
 <application xmlns="http://ns.adobe.com/air/application/27.0">
   <id>DokkOS</id>
   <versionNumber>1.0.0</versionNumber>
-  <versionLabel></versionLabel>
+  <versionLabel/>
   <filename>DokkOS</filename>
   <description/>
   <name>DokkOS</name>
@@ -137,6 +137,8 @@
 <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
 </manifest>]]></manifestAdditions>
   </android>
+  
+  
   
   
   
