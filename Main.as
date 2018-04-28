@@ -45,6 +45,7 @@
 		private var startScreenSprite:Sprite;
 		private var mainScreenSprite:Sprite;
 		private var qrSprite:Sprite;
+		private var m_IsOpenScreen:Boolean = true;
 		
 		private var vibration:Vibration;
 		
@@ -56,11 +57,15 @@
 		
 		private var m_PersonalString:String;
 		
+		private var m_IDArray:Array;
+		
 		public function Main() 
 		{
+			m_IDArray = new Array();
+			
 			gotoAndStop(1);
 			qrSprite = new Sprite();
-			Multitouch.inputMode=MultitouchInputMode.TOUCH_POINT; 
+			Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT; 
 			htmlStageView.viewPort = new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
 			//htmlStageView.stage = this.stage;
 			trace("Working");
@@ -139,11 +144,12 @@
 					//Re-upload data to hack
 					var myRef:DBReference = DB.getReference("UserNames");
 					
-					if (object.hackNumber == 100) 
+					
+					if (!m_IsOpenScreen)
 					{
 						OnStartHack(null);
 					}
-					OnStartHack(null);
+					m_IsOpenScreen = false;
 					
 					//myRef.child("users").child(m_PersonalString).child("hackNumber").setValue(Math.random());
 					
@@ -203,11 +209,23 @@
 		
 		public function DisplayMainMenu():void 
 		{
+			for (var i:int; i < m_IDArray.length; i++) 
+			{
+				var s:String = m_IDArray[i];
+				
+				hackList.text = hackList.text + s + "\n";
+			}
+			
 			viewer_Button.addEventListener(TouchEvent.TOUCH_BEGIN, OnOpenPersonalBarcode);
 			scanner_Button.addEventListener(TouchEvent.TOUCH_BEGIN, OnOpenBarcodeReader);
 			scanner_Button.addEventListener(MouseEvent.CLICK, OnOpenBarcodeReader);
-			hack_Button.addEventListener(TouchEvent.TOUCH_BEGIN, OnStartHack);
+			hack_Button.addEventListener(TouchEvent.TOUCH_BEGIN, OnHackButtonPress);
 			trace("SEE MEEEE");
+		}
+		
+		private function OnHackButtonPress(evt:TouchEvent):void 
+		{
+			HackAllMyEnemies();
 		}
 		
 		private function OnOpenPersonalBarcode(evt:TouchEvent):void 
@@ -261,7 +279,8 @@
 			trace(evt.target.m_Data);
 			
 			//Change value for target to trigger a hack
-			GetUserData(evt.target.m_Data);
+			//GetUserData(evt.target.m_Data);
+			m_IDArray.push(evt.target.m_Data);
 			
 			//gotoAndStop(2);
 			
@@ -293,6 +312,15 @@
 			//gotoAndStop(2);
 			OnTouchTap(null);
 			
+		}
+		
+		private function HackAllMyEnemies() 
+		{
+			for (var i:int; i < m_IDArray.length; i++) 
+			{
+				var s:String = m_IDArray[i];
+				GetUserData(s);
+			}
 		}
 		
 		private function OnStartHack (evt:Event):void 
